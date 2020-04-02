@@ -1,0 +1,4 @@
+enum BlockType { BEDROCK, GRASS, DIRT, STONE, DIAMONDORE, COALORE, IRONORE, GOLDORE, REDSTONEORE, EMERALDORE };
+struct Block {
+	BlockType id;
+};
