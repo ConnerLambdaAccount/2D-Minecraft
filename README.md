@@ -1,10 +1,10 @@
 # 2D Minecraft
-2D Minecraft is a C++ game written with the SDL2 graphics api
+2D Minecraft is a C++ game utilizing the SDL2 graphics API
 
-![Screenshot of Game](https://github.com/hai666l/2D-Minecraft/screenshot.png)
+![Screenshot of Game](https://raw.githubusercontent.com/hai666l/2D-Minecraft/master/screenshot.png)
 
 ## Installation
-NOTE: SDL2 Library is required, install via: 
+NOTE: SDL2 Library is required, install via Homebrew 
 ```bash
 git clone https://github.com/hai666l/2D-Minecraft.git
 cd ~/Downloads/2D-Minecraft
