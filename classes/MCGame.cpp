@@ -1,5 +1,0 @@
-class MCGame {
-	void render() {
-		
-	}
-};
