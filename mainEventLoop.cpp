@@ -21,11 +21,10 @@ void mainEventLoop(SDL_Renderer* ren) {
 	player.draw(ren);
 	inventory.draw(ren);
 	
-	SDL_RenderPresent(ren);
-	
 	bool quit = false;
 	bool falling = false;
 	int cnt = 0;
+	
 	while(!quit) {
 		SDL_Event e;
 		while(SDL_PollEvent(&e) && !quit) {
@@ -118,10 +117,11 @@ void mainEventLoop(SDL_Renderer* ren) {
 			cnt++;
 			printf("cnt = %i\n", cnt);
 		}
-		if(cnt == 16) {
+		if(cnt == 20) {
 			printf("Moving player down\n");
 			cnt = 0;
-			player.moveDown();
+			if(!world.collision(player.x, player.y+tileSize))
+				player.moveDown();
 			falling = false;
 		}
 		
