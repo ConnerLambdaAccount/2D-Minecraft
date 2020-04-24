@@ -24,6 +24,8 @@ void mainEventLoop(SDL_Renderer* ren) {
 	SDL_RenderPresent(ren);
 	
 	bool quit = false;
+	bool falling = false;
+	int cnt = 0;
 	while(!quit) {
 		SDL_Event e;
 		while(SDL_PollEvent(&e) && !quit) {
@@ -34,12 +36,19 @@ void mainEventLoop(SDL_Renderer* ren) {
 						quit = true;
 						break;
 					case SDLK_SPACE:
-						if(!world.collision(player.x, player.y-tileSize))
-							player.moveUp();
+						if(!falling) {
+							if(!world.collision(player.x, player.y-tileSize)) {
+								player.moveUp();
+								falling = true;
+								cnt = 0;
+							}
+						}
 						break;
 					case SDLK_LCTRL:
 						if(!world.collision(player.x, player.y+tileSize))
-							player.moveDown();
+							//while(world.map[world.ts(player.x)][world.ts(player.y)+2] == nullptr) {
+								player.moveDown();
+							//}
 						break;
 					case SDLK_d:
 						if(!world.collision(player.x+tileSize, player.y))
@@ -96,9 +105,7 @@ void mainEventLoop(SDL_Renderer* ren) {
 				int y = (e.button.y - (e.button.y % tileSize))/tileSize;
 				// Click is not on bedrock && in range of players reach
 				if(e.button.button == SDL_BUTTON_LEFT) {
-					if(y != screenTileHeight-1) {
-						world.destroyBlock(x, y);
-					}
+					world.destroyBlock(x, y);
 				}
 				if(e.button.button == SDL_BUTTON_RIGHT) {
 					world.createBlock(inventory.hbSelection, x, y, player.x, player.y);
@@ -106,6 +113,18 @@ void mainEventLoop(SDL_Renderer* ren) {
 			}
 			
 		}
+		
+		if(falling) {
+			cnt++;
+			printf("cnt = %i\n", cnt);
+		}
+		if(cnt == 16) {
+			printf("Moving player down\n");
+			cnt = 0;
+			player.moveDown();
+			falling = false;
+		}
+		
 		// Rerender
 		world.draw(ren);
 		player.draw(ren);

@@ -70,10 +70,8 @@ public:
 		}
 	}
 	
-	void ground(Block* map[screenTileWidth][screenTileHeight]) {
-		while(map[x / tileSize][(y / tileSize)+2] == nullptr) {
-			moveDown();
-		}
+	int ts(int coord) {
+		return coord /= tileSize;
 	}
 	
 	void resetSprite() {

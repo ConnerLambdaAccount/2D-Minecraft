@@ -92,10 +92,9 @@ public:
 					// if grass/dirt is above grass, make the grass below dirt
 					if(map[x][y]->id == blockType::GRASS && y-1 >= 0) {
 						if(map[x][y-1] != nullptr) {
-								map[x][y]->id = blockType::DIRT;
+							map[x][y]->id = blockType::DIRT;
 						}
 					}
-					// render
 					renderTexture(blockSprites, ren, tileSize, tileSize, x*tileSize, y*tileSize, &blockClips[map[x][y]->id]);
 				}
 			}
@@ -113,27 +112,26 @@ public:
 	bool reach(int x, int y, int playerX, int playerY) {
 		playerX = ts(playerX);
 		playerY = ts(playerY);
-		printf("Player: (%i, %i)\n", playerX, playerY);
-		printf("Block: (%i, %i)\n", x, y);
-		
 		return true;
 	}
 	
 	void destroyBlock(int x, int y) {
-		delete map[x][y];
-		map[x][y] = nullptr;
+		if(y != screenTileHeight-1) {
+			delete map[x][y];
+			map[x][y] = nullptr;
+		}
 	}
 	
 	void createBlock(int id, int x, int y, int playerX, int playerY) {
 		playerX = ts(playerX);
 		playerY = ts(playerY);
 		
-		// Player collision
+		// Player is trying to create a block on himself
 		if((y == playerY || y == playerY+1) && x == playerX) {
 			return;
 		}
 		
-		// Check if block to build upon		
+		// Check if there is a block to build upon
 		for(int xOffset=-1;xOffset<=1;xOffset++) {
 			if(map[x+xOffset][y] != nullptr) {
 				if(map[x][y] == nullptr) {
@@ -150,8 +148,7 @@ public:
 					map[x][y]->id = id;
 				}
 			}
-		}
-		
+		}	
 	}
 	
 	int ts(int coord) {
