@@ -23,7 +23,7 @@ void mainEventLoop(SDL_Renderer* ren) {
 	
 	bool quit = false;
 	bool falling = false;
-	int cnt = 0;
+	int fallTimer = 0;
 	
 	while(!quit) {
 		SDL_Event e;
@@ -36,26 +36,25 @@ void mainEventLoop(SDL_Renderer* ren) {
 						break;
 					case SDLK_SPACE:
 						if(!falling) {
-							if(!world.collision(player.x, player.y-tileSize)) {
+							if(!world.collision(player.x, player.y-1)) {
 								player.moveUp();
 								falling = true;
-								cnt = 0;
 							}
 						}
 						break;
-					case SDLK_LCTRL:
-						if(!world.collision(player.x, player.y+tileSize))
-							//while(world.map[world.ts(player.x)][world.ts(player.y)+2] == nullptr) {
-								player.moveDown();
-							//}
-						break;
 					case SDLK_d:
-						if(!world.collision(player.x+tileSize, player.y))
+						if(!world.collision(player.x+1, player.y)) {
 							player.moveRight();
+							if(!world.collision(player.x, player.y+1))
+								falling = true;
+						}
 						break;
 					case SDLK_a:
-						if(!world.collision(player.x-tileSize, player.y))
+						if(!world.collision(player.x-1, player.y)) {
 							player.moveLeft();
+							if(!world.collision(player.x, player.y+1))
+								falling = true;
+						}
 						break;
 					case SDLK_1:
 						inventory.hbSelection = blockType::BEDROCK;
@@ -95,14 +94,10 @@ void mainEventLoop(SDL_Renderer* ren) {
 				}
 			}
 			
-			// ideally do this inside every playerMovement function or make one playermovement function
-			//player.ground(world.map);
-			
 			// Mouse Events
 			if(e.type == SDL_MOUSEBUTTONDOWN) {
 				int x = (e.button.x - (e.button.x % tileSize))/tileSize;
 				int y = (e.button.y - (e.button.y % tileSize))/tileSize;
-				// Click is not on bedrock && in range of players reach
 				if(e.button.button == SDL_BUTTON_LEFT) {
 					world.destroyBlock(x, y);
 				}
@@ -110,19 +105,19 @@ void mainEventLoop(SDL_Renderer* ren) {
 					world.createBlock(inventory.hbSelection, x, y, player.x, player.y);
 				}
 			}
-			
 		}
 		
-		if(falling) {
-			cnt++;
-			printf("cnt = %i\n", cnt);
-		}
-		if(cnt == 20) {
-			printf("Moving player down\n");
-			cnt = 0;
-			if(!world.collision(player.x, player.y+tileSize))
-				player.moveDown();
-			falling = false;
+		if(falling) { 
+			fallTimer++;
+			if(fallTimer == 20) {
+				if(!world.collision(player.x, player.y+1)) {
+					player.moveDown();
+					fallTimer = 0;
+				} else {
+					falling = false;
+					fallTimer = 0;
+				}
+			}
 		}
 		
 		// Rerender

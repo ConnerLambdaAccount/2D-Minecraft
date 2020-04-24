@@ -29,49 +29,51 @@ public:
 
 	// Create player at (20, 22)
 	void create() {
-		x = (screenTileWidth/2) * tileSize;
-		y = (screenTileHeight-8) * tileSize;
+		x = (screenTileWidth/2);
+		y = (screenTileHeight-8);
 		currentSprite = playerForward;
 	}
 
 	void draw(SDL_Renderer* ren) {
-		renderTexture(playerSprites, ren, tileSize, tileSize*2, x, y, currentSprite);
+		renderTexture(playerSprites, ren, tileSize, tileSize*2, x*tileSize, y*tileSize, currentSprite);
 	}
 	
 	void moveUp() {
-		if(y-tileSize >= 0) {
-			y -= tileSize;
+		if(y-1 >= 0) {
+			y -= 1;
 			if(currentSprite != playerForward) resetSprite();
+			printLocation();
 		}
 	}
 	
 	void moveDown() {
-		if(y+tileSize <= RESOLUTION_H-(tileSize*3)) {
-			y += tileSize;
+		if(y+1 <= screenTileHeight-3) {
+			y += 1;
 			if(currentSprite != playerForward) resetSprite();
+			printLocation();
 		}
 	}
 
 	void moveLeft() {
-		if(x-tileSize >= 0) {
-			x -= tileSize;
+		if(x-1 >= 0) {
+			x -= 1;
 			if(currentSprite != playerLeft) currentSprite = playerLeft;
-		} else {
-			x = RESOLUTION_W - tileSize;
+			printLocation();
 		}
 	}
 
 	void moveRight() {
-		if(x+tileSize <= RESOLUTION_W-tileSize) {
-			x += tileSize;
+		if(x+1 <= screenTileWidth-1) {
+			x += 1;
 			if(currentSprite != playerRight) currentSprite = playerRight;
 		} else {
 			x = 0;
 		}
+		printLocation();
 	}
 	
-	int ts(int coord) {
-		return coord /= tileSize;
+	void printLocation() {
+		printf("Player: (%i, %i)\n", x, y);
 	}
 	
 	void resetSprite() {
