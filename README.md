@@ -9,7 +9,7 @@ NOTE: SDL2 & SDL2_image is required, install via Homebrew
 ```bash
 git clone https://github.com/hai666l/2D-Minecraft.git
 cd ~/Downloads/2D-Minecraft
-brew install sdl2
+brew install sdl2 sdl2_image
 make
 ```
 # Linux
