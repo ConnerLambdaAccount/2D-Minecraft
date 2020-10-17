@@ -4,7 +4,7 @@
 ![Screenshot of Game](https://raw.githubusercontent.com/hai666l/2D-Minecraft/master/screenshot.png)
 
 # Installation 
-## MAC
+## MacOS
 NOTE: SDL2 & SDL2_image is required, install via Homebrew 
 ```bash
 git clone https://github.com/hai666l/2D-Minecraft.git
